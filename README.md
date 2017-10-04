@@ -14,6 +14,9 @@ In Proceedings of IEEE Symposium on Visual Analytics Science and Technology (VAS
   * Three different type of views to identify communication bottlenecks
   * Alternative better route suggestion
 
+* Dataset
+  * Dataset is available from https://github.com/takanori-fujiwara/par-comm-data
+
 Requirements
 -----
 * Note: Tested on Mac OS X (El Capitan and Sierra).
