@@ -1,65 +1,145 @@
-# Parallel Communication Data in Supercomputers
+## Visuco - A Visual Analytics System for Optimizing Communications in Massively Parallel Applications
 
-## About
-Communication datasets including routes and message size information between compute nodes/cores. These datasets were collected for the paper:
+About
+-----
+* Visual analytics software for identifying bottlenecks on prallel communications used MPI and finding better communication options
 
+* This project is a work for the paper below.     
 ***A Visual Analytics System for Optimizing Communications in Massively Parallel Applications***    
 Takanori Fujiwara, Preeti Malakar, Venkatram Vishwanath, Khairi Reda, Michael E. Papka, and Kwan-Liu Ma    
 In Proceedings of IEEE Symposium on Visual Analytics Science and Technology (VAST), 2017.
 
-The system used in the paper above is also available.    
-***Visuco***    
- https://github.com/takanori-fujiwara/visuco (under work for cleaning the code)
+* Features
+  * Enable to visualize large scale communications (8,000 computers nodes and more)
+  * Three different type of views to identify communication bottlenecks
+  * Alternative better route suggestion
 
-## Description of datasets
-### Directories
-route
-* has communication route information files including a count of hops, MPI ranks of source and destination, MPI ranks used in a route, and physical coordinates of the participatng MPI ranks.
+Requirements
+-----
+* Note: Tested on Mac OS X (El Capitan and Sierra).
+* XCode (latest)
+* Qt5 (latest)
+* QtCreator (latest)
+* (Follows are required if you want to generate new graph data.)
+* Python 2.7 or higher
+* graph-tool (latest)
+* R (latest)
 
-hopbyte
-* has a message size and a number of hops information files including MPI ranks of source and destination.
+Installation
+-----
+#### Mac OS
+* Install latest XCode from Mac App store
+* After finishing installation of XCode, launch XCode at once to verify XCode.
+* Install Qt. If you use home brew(http://brew.sh) use the commands below
 
-argument
-* has an information about arguments used to run applications for obtaining each data
+    `brew update`
 
-### File names
-In route and hopbyte directories, we use a file naming rule below.
+    `brew install qt5`
 
-*"Application Name"*\_*"System Name"*\_n*"Number of Compute Nodes Used"*\_c*"Number of Cores Used"*\_*"Scaling Tested"*_*"Directory Name"*
-.txt
+* Check qmake version.
 
-For example, MiniMD_Mira_n1024_c4_w_hopbyte.txt means hopbyte information file collected by running MiniMD on Mira with 1,024 nodes and 4 cores, and to see weak scaling.
+    `qmake -v`
 
-We used w: weak scaling, s1: strong scaling with small size problem, and s2: strong scaling with large size problem as "Scaling Tested".
+    If the version is lower than qt5, use the command below.
 
-### File formats
-#### Route File
-Each line has a format below:
-* Hop *"Hop Count"*: [*"Source MPI Rank"*-*"Destination MPI Rank"*] *"Intermediate Rank From"* (*"Its Coordinates"*) -> *"Intermediate Rank To"* (*"Its Coordinates"*)
+    `brew link --force --overwrite qt5`
 
-For example,  
-Hop 1: [12-0] 12 (0 1 1 0 0 0) -> 8 (0 1 0 0 0 0)  
-Hop 2: [12-0] 8 (0 1 0 0 0 0) -> 0 (0 0 0 0 0 0)  
-mean that this is a communication route from MPI rank 12 to 0, which uses 12 to 8 as the first hop and 8 to 0 as the second hop. MPI rank 12 has (0 1 1 0 0 0) as its coordinates and so on.
+* Download and Install QtCreator from http://download.qt.io/official_releases/qtcreator/.
+##### Follows are in case you want to generate new graph data
+* If you have not installed python, install python
 
-#### Hopbyte File
-Each column separated by space has information below.  
-* Source MPI Rank, Destination MPI Rank, Message Size (Byte), and Number of Hops.
+    `brew install python`   
 
-## Applications Used
-* MiniMD and MiniAMR
-    * https://mantevo.org  
-* IMB-MPI1
-    * https://software.intel.com/en-us/articles/intel-mpi-benchmarks  
+* Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/download).
 
-## Systems Used
-* Theta, Mira, and Vesta
-    * https://www.alcf.anl.gov/computing-resources
+    -   Note: current graph-tool version in homebrew does not work with the latest "boost". Try to use the command below.
+
+    	`brew install graph-tool --build-from-source`
+
+    -   After installing graph-tool, check whether it works or not.
+
+    	`python`
+
+   		`>>> from graph_tool.all import *`
+
+* Install R and R packages.
+
+    `brew install R`
+
+    `R`
+
+    `>>> install.packages(c("sna", "qap", "argparse"))`
+
+* Build the software with the procedures below.
+
+	- Launch "./src/qtCode/traceViz/traceViz.pro" with QtCreator.
+
+	- If QtCreator says no kits, select "options" link.
+
+		- Configure Kits for Build. go to "preference -> Qt Versions" and then add "/usr/local/bin/qmake" if there is no qt version.
+		- Then, go to "Kits->Desktop" and select added latest qt version in "Qt version", select Clang(x86 64bit) in "Compiler".
+
+		- After finishing above setting, select "Desktop" as a Kit.
+
+	- Built with QtCreator.
+
+Usage
+-----
+##### Initial Settings
+* Run from QtCreator or launch "traceViz.app" in build directory.
+* Select "Preferences" in the menu bar and set paths for python and RScript commands.
+
+******
+
+##### Generate new analysis data including graph information from route files and mappind data
+* Select "Generate Analysis Data" from "File" menu.
+* Select a route file (TXT) that you want to analyze. A route file must be the same format with an output file from bgqroute (https://github.com/pmalakar/bgqroute).
+
+	For example,
+
+    	Hop 1: [6-12] 6 (0 0 1 1 0 0) -> 4 (0 0 1 0 0 0)
+    	Hop 2: [6-12] 4 (0 0 1 0 0 0) -> 12 (0 1 1 0 0 0)
+    	...
+
+* Select a matrix mapping file (CSV). This is used for mapping the coordinates of ranks to the coordinates in the matrix view.
+
+	The format must be
+    first line: sizes of dimensions.
+
+    	1st line: size of each dimensions
+    	2nd line: Permutation order in the matrix view as you want to use.
+
+    For example, if you use 5D torus with 4x2x4x8x2 sizes (each number is cooresponding to A,B,C,D,E dimension) and EDCBA order
+
+    	4,2,4,8,2
+    	4,3,2,1,0
+
+* (Optional and this is still alpha version) Select a hop-byte file (CSV). This is used when the system suggests alternative routes or mapping.
+
+	The format must be
+
+    	Route Source,Destination,Message Size,Number of Hops
+
+	For example,
+
+    	4,10,342321,3
+
+* Set number of nodes, cores according to your environment that used for obtaining the route file.
+
+* Set a threshold for the number of nodes, which is used for graph partitioning and aggregating the node.
+
+
+	This is still under developing. Just use the same value with the number of nodes now.
+
+* Finally, set an output directory as you want and push "OK".
+
+******
+
+##### Load generated new analysis data
+* Select "Load Analysis Data" from "File" menu.
+* Select the directory you generated in the "Generate new analysis data" step.
+******
 
 ## How to Cite
 Please, cite:
 * Takanori Fujiwara, Preeti Malakar, Venkatram Vishwanath, Khairi Reda, Michael E. Papka, and Kwan-Liu Ma, "A Visual Analytics System for Optimizing Communications in Massively Parallel Applications." In Proceedings of IEEE Symposium on Visual Analytics Science and Technology (VAST), 2017.
-
-## Lisence
-[![CC-BY](https://licensebuttons.net/l/by/3.0/88x31.png)](https://licensebuttons.net/l/by/3.0/88x31.png)
-This work is available under a [CC-BY]( http://creativecommons.org/licenses/by/4.0/) license.   
