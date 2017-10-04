@@ -1,0 +1,9 @@
+*.aux
+*.bbl
+*.out
+*.o
+*.blg
+*.gz
+*.log
+*.pyc
+.DS_Store

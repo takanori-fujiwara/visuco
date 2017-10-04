@@ -1,0 +1,16 @@
+rm route.o
+CC -std=c++11 -c route.cxx 
+CC -o multiroutes route.o multiroutes.cxx 
+
+
+qsub -n 32 job.sh (or copy the lines to your job script)
+
+
+Files:
+location.txt
+nodetable 
+jobnodetable 
+Dont change the output file names, they are hardcoded in certain places, for now
+
+jobnodetable file will contain rank to node mapping
+

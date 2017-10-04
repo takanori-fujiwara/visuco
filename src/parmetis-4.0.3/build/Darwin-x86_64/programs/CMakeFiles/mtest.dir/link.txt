@@ -1,0 +1,1 @@
+/usr/local/bin/mpicc   -DLINUX -D_FILE_OFFSET_BITS=64 -DNDEBUG -DNDEBUG2 -DHAVE_EXECINFO_H -DHAVE_GETLINE -O3 -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/mtest.dir/mtest.c.o CMakeFiles/mtest.dir/io.c.o  -o mtest  ../libparmetis/libparmetis.a ../libmetis/libmetis.a -lm 
