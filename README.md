@@ -19,20 +19,20 @@ In Proceedings of IEEE Symposium on Visual Analytics Science and Technology (VAS
 
 Requirements
 -----
-* Note: Tested on Mac OS X (El Capitan and Sierra).
+* Note: Tested on Mac OS X (El Capitan, Sierra, and High Sierra).
 * XCode (latest)
 * Qt5 (latest)
 * QtCreator (latest)
 * (Follows are required if you want to generate new graph data.)
-* Python 2.7 or higher
-* graph-tool (latest)
-* R (latest)
+ * Python 2.7 or higher
+ * graph-tool (latest)
+ * R (latest)
 
 Installation
 -----
 #### Mac OS
 * Install latest XCode from Mac App store
-* After finishing installation of XCode, launch XCode at once to verify XCode.
+* After finishing installation of XCode, __launch XCode at once to verify XCode__.
 * Install Qt. If you use home brew(http://brew.sh) use the commands below
 
     `brew update`
@@ -47,31 +47,51 @@ Installation
 
     `brew link --force --overwrite qt5`
 
-* Download and Install QtCreator from http://download.qt.io/official_releases/qtcreator/.
+* Download and Install QtCreator.
+
+    `brew tap caskroom/cask`
+
+    `brew cask install qt-creator`
+
 ##### Follows are in case you want to generate new graph data
+* Install R and R packages.
+
+    `brew install r`
+
+  Check `R` runs the same version installed above.
+
+    `which R`
+
+  If this does not return `/usr/local/bin/R`, add `export PATH=/usr/local/bin:$PATH` in .bash_profile. Also, try to `brew unlink r && brew link r`.
+
+    `R` (run R in terminal)
+
+    `>>> install.packages(c("sna", "qap", "argparse"))`
+
 * If you have not installed python, install python
 
-    `brew install python`   
+    `brew install python`
 
-* Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/download).
+  Check `python2` runs the same version installed above.
 
-    -   Note: current graph-tool version in homebrew does not work with the latest "boost". Try to use the command below.
+    `which python2`
 
-    	`brew install graph-tool --build-from-source`
+  If this does not return `/usr/local/bin/python2`, add `export PATH=/usr/local/bin:$PATH` in .bash_profile. Also, try to `brew unlink python && brew link python`.  
+
+
+* Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/).
+
+    -   Note: current graph-tool version cannot been installed via homebrew since homebrew/science was deprecated. Try a different way.
+
+    <!-- -   Note: current graph-tool version in homebrew does not work with the latest "boost". Try to use the command below.
+
+    	`brew install graph-tool --build-from-source` -->
 
     -   After installing graph-tool, check whether it works or not.
 
-    	`python`
+    	`python2` (run python2 in terminal)
 
    		`>>> from graph_tool.all import *`
-
-* Install R and R packages.
-
-    `brew install R`
-
-    `R`
-
-    `>>> install.packages(c("sna", "qap", "argparse"))`
 
 * Build the software with the procedures below.
 
@@ -117,7 +137,7 @@ Usage
     	4,2,4,8,2
     	4,3,2,1,0
 
-* (Optional and this is still alpha version) Select a hop-byte file (CSV). This is used when the system suggests alternative routes or mapping.
+* (Optional) Select a hop-byte file (CSV). This is used when the system suggests alternative routes or mapping.
 
 	The format must be
 
