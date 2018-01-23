@@ -511,14 +511,14 @@ void MainWindow::setupColor()
 
 void MainWindow::setupGraph(QString analysisDirPath)
 {
-    QString application = ui->comboGraphViewData_1->currentText(); // mimiMD, miniAMR, io
-    QString n = ui->comboGraphViewData_2->currentText();
-    QString c = ui->comboGraphViewData_3->currentText();
-    QString option = ui->comboGraphViewData_4->currentText(); // "" (none) or "_w" (weak scaling), "_s1" (strong scaling: small), "_s2" (strong scaling: large)
+//    QString application = ui->comboGraphViewData_1->currentText(); // mimiMD, miniAMR, io
+//    QString n = ui->comboGraphViewData_2->currentText();
+//    QString c = ui->comboGraphViewData_3->currentText();
+//    QString option = ui->comboGraphViewData_4->currentText(); // "" (none) or "_w" (weak scaling), "_s1" (strong scaling: small), "_s2" (strong scaling: large)
 
-    if (analysisDirPath == "") {
-        analysisDirPath = qApp->applicationDirPath() + "/../../../../../../data/graph/" + application + "_n" + n + "_c" + c + option + "/";
-    }
+//    if (analysisDirPath == "") {
+//        analysisDirPath = qApp->applicationDirPath() + "/../../../../../../data/graph/" + application + "_n" + n + "_c" + c + option + "/";
+//    }
 
     QString layout = "sfdpw"; // "arf", "arfw", "sfdp", "sfdpw
 
@@ -551,13 +551,13 @@ void MainWindow::setupGraph(QString analysisDirPath)
 void MainWindow::setupAdjMatrix(QString analysisDirPath)
 {
     QString nodeMappingFilePath = analysisDirPath + "mapping.csv";
-    if (analysisDirPath == "") {
-        QString a = ui->comboGraphViewData_1->currentText(); // mimiMD, miniAMR, io
-        QString n = ui->comboGraphViewData_2->currentText();
-        QString c = ui->comboGraphViewData_3->currentText();
-        QString o = ui->comboGraphViewData_4->currentText();
-        nodeMappingFilePath = qApp->applicationDirPath() + "/../../../../../../data/graph/" + a + "_n" + n + "_c" + c + o + "/mapping.csv";
-    }
+//    if (analysisDirPath == "") {
+//        QString a = ui->comboGraphViewData_1->currentText(); // mimiMD, miniAMR, io
+//        QString n = ui->comboGraphViewData_2->currentText();
+//        QString c = ui->comboGraphViewData_3->currentText();
+//        QString o = ui->comboGraphViewData_4->currentText();
+//        nodeMappingFilePath = qApp->applicationDirPath() + "/../../../../../../data/graph/" + a + "_n" + n + "_c" + c + o + "/mapping.csv";
+//    }
 
     QVector<int> shape;
     QVector<int> order;
@@ -703,12 +703,12 @@ void MainWindow::updateBtnsAndInfoForAltRoute(int numSuggestedRoutes, int totalC
 void MainWindow::setMatrixViewGraphDir()
 {
     // TODO: this code is temp one
-    QString graphDir = qApp->applicationDirPath() + "/../../../../../../data/graph/" +
-            ui->comboGraphViewData_1->currentText() +
-            "_n" + ui->comboGraphViewData_2->currentText() +
-            "_c" + ui->comboGraphViewData_3->currentText() +
-            ui->comboGraphViewData_4->currentText() + "/";
-    ui->matrixView->setGraphDir(graphDir);
+//    QString graphDir = qApp->applicationDirPath() + "/../../../../../../data/graph/" +
+//            ui->comboGraphViewData_1->currentText() +
+//            "_n" + ui->comboGraphViewData_2->currentText() +
+//            "_c" + ui->comboGraphViewData_3->currentText() +
+//            ui->comboGraphViewData_4->currentText() + "/";
+//    ui->matrixView->setGraphDir(graphDir);
 }
 
 void MainWindow::updateBtnsAndInfoForAltMapping(int numSuggestedRoutes, int totalChangeOfLength, int totalChangeOfMaxLoad)
@@ -790,14 +790,14 @@ void MainWindow::setStatViewCurrentComboIndex(int statViewCurrentComboIndex) { t
 
 void MainWindow::changeGraphLayout(QString layout)
 {
-    QString application = ui->comboGraphViewData_1->currentText(); // mimiMD, miniAMR, io
-    QString n = ui->comboGraphViewData_2->currentText();
-    QString c = ui->comboGraphViewData_3->currentText();
-    QString option = ui->comboGraphViewData_4->currentText(); // "" (none) or "_w" (weak scaling), "_s1" (strong scaling: small), "_s2" (strong scaling: large)
+//    QString application = ui->comboGraphViewData_1->currentText(); // mimiMD, miniAMR, io
+//    QString n = ui->comboGraphViewData_2->currentText();
+//    QString c = ui->comboGraphViewData_3->currentText();
+//    QString option = ui->comboGraphViewData_4->currentText(); // "" (none) or "_w" (weak scaling), "_s1" (strong scaling: small), "_s2" (strong scaling: large)
 
-    QString graphPositionsFilePath = qApp->applicationDirPath() + "/../../../../../../data/graph/" + application + "_n" + n + "_c" + c + option + "/positions_" + layout + ".csv";
-    graph->loadFromPosFile(graphPositionsFilePath);
-    graph->setLayout(layout);
+//    QString graphPositionsFilePath = qApp->applicationDirPath() + "/../../../../../../data/graph/" + application + "_n" + n + "_c" + c + option + "/positions_" + layout + ".csv";
+//    graph->loadFromPosFile(graphPositionsFilePath);
+//    graph->setLayout(layout);
     resetupViews();
 }
 
