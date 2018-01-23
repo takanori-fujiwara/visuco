@@ -6,8 +6,8 @@ Graph::Graph(QVector<Vertex> vertices, QVector<Edge> edges, QVector<Route> route
     this->edges = edges;
     this->routes = routes;
 
-    allocatingUnusedCoords = true;
-    //allocatingUnusedCoords = false; // For Theta
+    //allocatingUnusedCoords = true; // For 5dtorus
+    allocatingUnusedCoords = false; // For theta
     aveInDegOfEdges = aveInDegOfEdgesLoad = aveOutDegOfEdges = aveOutDegOfEdgesLoad = 0.0;
     medInDegOfEdges = medInDegOfEdgesLoad = medOutDegOfEdges = medOutDegOfEdgesLoad = 0;
     minInDegOfEdges = minInDegOfEdgesLoad = minOutDegOfEdges = minOutDegOfEdgesLoad = 0;
@@ -31,8 +31,12 @@ Graph::Graph(QVector<Vertex> vertices, QVector<Edge> edges, QVector<Route> route
     medRoutesHopbyte = minRoutesHopbyte = maxRoutesHopbyte = 0.0;
 }
 
-bool Graph::loadFromRoutesFile(const QString &rtFilePath, const QString &hopbyteFilePath, int numOfCores, QVector<int> shape, QVector<int> order, QString outputDir, QVector<int> aggregatingDims)
+bool Graph::loadFromRoutesFile(const QString &rtFilePath, const QString &hopbyteFilePath, int numOfCores, QVector<int> shape, QVector<int> order, QString outputDir, QString topologyType, QVector<int> aggregatingDims)
 {
+    if (topologyType == "5dtorus") {
+        allocatingUnusedCoords = true;
+    }
+
     int numOfRanks = numOfCores;
     foreach(int i, shape) {
         numOfRanks *= i;

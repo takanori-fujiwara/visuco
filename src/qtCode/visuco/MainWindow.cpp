@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ///// For Theta, need to change below
-    // MainWindow.cpp: aggregatingDims = {3}; // For Theta
+    // MainWindow.cpp: aggregatingDims = {3} or {3, 4}; // For Theta
     // AdjMatrix.cpp: change unit_adj
     // Graph.cpp: allocatingUnusedCoords = false; // For Theta
 
@@ -14,10 +14,10 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle("Communication View & Detailed Route View");
     thresAggregation = 256;
     aggregatingDims = {3,4};
-//    aggregatingDims = {3}; // For Theta
+//    aggregatingDims = {3}; // For Theta (previous one)
     qSort(aggregatingDims.begin(), aggregatingDims.end(), qGreater<int>());
 
-    pythonPath = "/usr/local/bin/python2.7";
+    pythonPath = "/usr/local/bin/python2";
     rscriptPath = "/usr/local/bin/Rscript";
     loadCurrentSettings();
 
@@ -263,6 +263,7 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
 
     QVector<int> shape;
     QVector<int> order;
+    QString topologyType;
 
     if (mappingFilePath != "") {
         // load from mapping file
@@ -272,7 +273,7 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
             int lineNo = 0;
             while (!ts.atEnd()) {
                 QString line = ts.readLine();
-                QStringList elements = line.split(",");
+                QStringList elements = line.split(" ");
                 if (lineNo == 0) {
                     foreach(QString elem, elements) {
                         shape.push_back(elem.toInt());
@@ -282,6 +283,9 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
                     foreach(QString elem, elements) {
                         order.push_back(elem.toInt());
                     }
+                }
+                if (lineNo == 2) {
+                    topologyType = elements[0];
                 }
                 lineNo++;
             }
@@ -296,9 +300,9 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
 
     // output graph data
     Graph* tmpGraph = new Graph;
-    tmpGraph->loadFromRoutesFile(routesFilePath, hopbytesFilePath, numCores, shape, order, analysisDirPath); // this produces graph files
+    tmpGraph->loadFromRoutesFile(routesFilePath, hopbytesFilePath, numCores, shape, order, analysisDirPath, topologyType); // this produces graph files
     Graph* tmpAggregatedGraph = new Graph;
-    tmpAggregatedGraph->loadFromRoutesFile(routesFilePath, hopbytesFilePath, numCores, shape, order, analysisDirPath, aggregatingDims); // this produces graph files
+    tmpAggregatedGraph->loadFromRoutesFile(routesFilePath, hopbytesFilePath, numCores, shape, order, analysisDirPath, topologyType, aggregatingDims); // this produces graph files
 
     // output all child indices to calculate positions in aggregated graph
     QVector<QVector<int>> vecChildIndices;
@@ -354,7 +358,7 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
 
     // output adjmatrix and distance matrix
     AdjMatrix* tmpAdjMat = new AdjMatrix;
-    tmpAdjMat->resetAdjMat(shape, order);
+    tmpAdjMat->resetAdjMat(shape, order, topologyType);
     tmpAdjMat->outputAdjMatInCsv(analysisDirPath + "adj_mat.csv");
     delete tmpAdjMat;
 
@@ -375,7 +379,6 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
     if (!aLotOfSubGraphs) numOfSubGraphs = numOfVertices / thresForGraphPartition;
 
     // output partition files by Metis
-    qDebug() << "thres part" << thresForGraphPartition;
     if (numOfVertices > thresForGraphPartition) {
         // if (numOfVertices == thresForGraphPartition * 2) thresForGraphPartition /= 2; // when each partition has only 2 nodes, it doesn't work well (rule of thumb).
 
@@ -433,73 +436,73 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
 
 void MainWindow::setupComboBox()
 {
-    ui->comboGraphViewData_1->addItems(QStringList({"", "imb-MPI1", "multisend", "miniMD", "miniMDTheta", "miniAMR", "miniAMRTheta", "ioDefault", "ioOpt"}));
-    ui->comboGraphViewData_1->setCurrentText("");
-    updateGraphViewDataComboBoxes(ui->comboGraphViewData_1->currentText());
-    connect(ui->comboGraphViewData_1, SIGNAL(activated(QString)), this, SLOT(updateGraphViewDataComboBoxes(QString)));
-    connect(ui->comboGraphViewData_1, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
-    connect(ui->comboGraphViewData_2, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
-    connect(ui->comboGraphViewData_3, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
-    connect(ui->comboGraphViewData_4, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
+//    ui->comboGraphViewData_1->addItems(QStringList({"", "imb-MPI1", "multisend", "miniMD", "miniMDTheta", "miniAMR", "miniAMRTheta", "ioDefault", "ioOpt"}));
+//    ui->comboGraphViewData_1->setCurrentText("");
+//    updateGraphViewDataComboBoxes(ui->comboGraphViewData_1->currentText());
+//    connect(ui->comboGraphViewData_1, SIGNAL(activated(QString)), this, SLOT(updateGraphViewDataComboBoxes(QString)));
+//    connect(ui->comboGraphViewData_1, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
+//    connect(ui->comboGraphViewData_2, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
+//    connect(ui->comboGraphViewData_3, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
+//    connect(ui->comboGraphViewData_4, SIGNAL(activated(QString)), this, SLOT(resetupAll()));
 }
 
 void MainWindow::updateGraphViewDataComboBoxes(QString selectedApplication)
 {
-    ui->comboGraphViewData_2->clear();
-    ui->comboGraphViewData_3->clear();
-    ui->comboGraphViewData_4->clear();
-    if (selectedApplication == "imb-MPI1") {
-        ui->comboGraphViewData_2->addItems(QStringList({"32","64"}));
-        ui->comboGraphViewData_2->setCurrentText("32");
-        ui->comboGraphViewData_3->addItems(QStringList({"16"}));
-        ui->comboGraphViewData_3->setCurrentText("16");
-        ui->comboGraphViewData_4->addItems(QStringList({""}));
-        ui->comboGraphViewData_4->setCurrentText("");
-    } else if (selectedApplication == "multisend") {
-        ui->comboGraphViewData_2->addItems(QStringList({"256","512","2048"}));
-        ui->comboGraphViewData_2->setCurrentText("256");
-        ui->comboGraphViewData_3->addItems(QStringList({"16"}));
-        ui->comboGraphViewData_3->setCurrentText("16");
-        ui->comboGraphViewData_4->addItems(QStringList({""}));
-        ui->comboGraphViewData_4->setCurrentText("");
-    } else if (selectedApplication == "miniMD") {
-        ui->comboGraphViewData_2->addItems(QStringList({"32", "64", "128", "256", "512", "1024", "2048", "4096", "8192"}));
-        ui->comboGraphViewData_2->setCurrentText("2048");
-        ui->comboGraphViewData_3->addItems(QStringList({"1", "4", "16"}));
-        ui->comboGraphViewData_3->setCurrentText("1");
-        ui->comboGraphViewData_4->addItems(QStringList({"_w", "_wr", "_s1", "_s1r", "_s2", "_s2r"}));
-        ui->comboGraphViewData_4->setCurrentText("_w");
-    } else if (selectedApplication == "miniMDTheta") {
-        ui->comboGraphViewData_2->addItems(QStringList({"32", "64", "128", "256", "512", "1024"}));
-        ui->comboGraphViewData_2->setCurrentText("32");
-        ui->comboGraphViewData_3->addItems(QStringList({"1"}));
-        ui->comboGraphViewData_3->setCurrentText("1");
-        ui->comboGraphViewData_4->addItems(QStringList({"_w"}));
-        ui->comboGraphViewData_4->setCurrentText("_w");
-    } else if (selectedApplication == "miniAMR") {
-        ui->comboGraphViewData_2->addItems(QStringList({"32", "64", "128", "256", "512", "1024", "2048", "4096"}));
-        ui->comboGraphViewData_2->setCurrentText("256");
-        ui->comboGraphViewData_3->addItems(QStringList({"1", "2", "4"}));
-        ui->comboGraphViewData_3->setCurrentText("1");
-        ui->comboGraphViewData_4->addItems(QStringList({"_s1","_s1r","_s2","_s2r"}));
-        ui->comboGraphViewData_4->setCurrentText("_s1");
-    } else if (selectedApplication == "miniAMRTheta") {
-        ui->comboGraphViewData_2->addItems(QStringList({"32","64","128","256","512","1024"}));
-        ui->comboGraphViewData_2->setCurrentText("32");
-        ui->comboGraphViewData_3->addItems(QStringList({"1"}));
-        ui->comboGraphViewData_3->setCurrentText("1");
-        ui->comboGraphViewData_4->addItems(QStringList({"_s2"}));
-        ui->comboGraphViewData_4->setCurrentText("_s2");
-    } else if (selectedApplication == "ioDefault" || selectedApplication == "ioOpt") {
-        ui->comboGraphViewData_2->addItems(QStringList({"512","1024"}));
-        ui->comboGraphViewData_2->setCurrentText("512");
-        ui->comboGraphViewData_3->addItems(QStringList({"16"}));
-        ui->comboGraphViewData_3->setCurrentText("16");
-        ui->comboGraphViewData_4->addItems(QStringList({""}));
-        ui->comboGraphViewData_4->setCurrentText("");
-    }
+//    ui->comboGraphViewData_2->clear();
+//    ui->comboGraphViewData_3->clear();
+//    ui->comboGraphViewData_4->clear();
+//    if (selectedApplication == "imb-MPI1") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"32","64"}));
+//        ui->comboGraphViewData_2->setCurrentText("32");
+//        ui->comboGraphViewData_3->addItems(QStringList({"16"}));
+//        ui->comboGraphViewData_3->setCurrentText("16");
+//        ui->comboGraphViewData_4->addItems(QStringList({""}));
+//        ui->comboGraphViewData_4->setCurrentText("");
+//    } else if (selectedApplication == "multisend") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"256","512","2048"}));
+//        ui->comboGraphViewData_2->setCurrentText("256");
+//        ui->comboGraphViewData_3->addItems(QStringList({"16"}));
+//        ui->comboGraphViewData_3->setCurrentText("16");
+//        ui->comboGraphViewData_4->addItems(QStringList({""}));
+//        ui->comboGraphViewData_4->setCurrentText("");
+//    } else if (selectedApplication == "miniMD") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"32", "64", "128", "256", "512", "1024", "2048", "4096", "8192"}));
+//        ui->comboGraphViewData_2->setCurrentText("2048");
+//        ui->comboGraphViewData_3->addItems(QStringList({"1", "4", "16"}));
+//        ui->comboGraphViewData_3->setCurrentText("1");
+//        ui->comboGraphViewData_4->addItems(QStringList({"_w", "_wr", "_s1", "_s1r", "_s2", "_s2r"}));
+//        ui->comboGraphViewData_4->setCurrentText("_w");
+//    } else if (selectedApplication == "miniMDTheta") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"32", "64", "128", "256", "512", "1024"}));
+//        ui->comboGraphViewData_2->setCurrentText("32");
+//        ui->comboGraphViewData_3->addItems(QStringList({"1"}));
+//        ui->comboGraphViewData_3->setCurrentText("1");
+//        ui->comboGraphViewData_4->addItems(QStringList({"_w"}));
+//        ui->comboGraphViewData_4->setCurrentText("_w");
+//    } else if (selectedApplication == "miniAMR") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"32", "64", "128", "256", "512", "1024", "2048", "4096"}));
+//        ui->comboGraphViewData_2->setCurrentText("256");
+//        ui->comboGraphViewData_3->addItems(QStringList({"1", "2", "4"}));
+//        ui->comboGraphViewData_3->setCurrentText("1");
+//        ui->comboGraphViewData_4->addItems(QStringList({"_s1","_s1r","_s2","_s2r"}));
+//        ui->comboGraphViewData_4->setCurrentText("_s1");
+//    } else if (selectedApplication == "miniAMRTheta") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"32","64","128","256","512","1024"}));
+//        ui->comboGraphViewData_2->setCurrentText("32");
+//        ui->comboGraphViewData_3->addItems(QStringList({"1"}));
+//        ui->comboGraphViewData_3->setCurrentText("1");
+//        ui->comboGraphViewData_4->addItems(QStringList({"_s2"}));
+//        ui->comboGraphViewData_4->setCurrentText("_s2");
+//    } else if (selectedApplication == "ioDefault" || selectedApplication == "ioOpt") {
+//        ui->comboGraphViewData_2->addItems(QStringList({"512","1024"}));
+//        ui->comboGraphViewData_2->setCurrentText("512");
+//        ui->comboGraphViewData_3->addItems(QStringList({"16"}));
+//        ui->comboGraphViewData_3->setCurrentText("16");
+//        ui->comboGraphViewData_4->addItems(QStringList({""}));
+//        ui->comboGraphViewData_4->setCurrentText("");
+//    }
 
-    this->selectedApplication = selectedApplication;
+//    this->selectedApplication = selectedApplication;
 }
 
 void MainWindow::setupColor()
@@ -558,6 +561,7 @@ void MainWindow::setupAdjMatrix(QString analysisDirPath)
 
     QVector<int> shape;
     QVector<int> order;
+    QString topologyType;
 
     QFile mappingFile(nodeMappingFilePath);
     if (mappingFile.open(QIODevice::ReadOnly)) {
@@ -566,7 +570,7 @@ void MainWindow::setupAdjMatrix(QString analysisDirPath)
         int lineNo = 0;
         while (!ts.atEnd()) {
             QString line = ts.readLine();
-            QStringList elements = line.split(",");
+            QStringList elements = line.split(" ");
             if (lineNo == 0) {
                 foreach(QString elem, elements) {
                     shape.push_back(elem.toInt());
@@ -577,13 +581,16 @@ void MainWindow::setupAdjMatrix(QString analysisDirPath)
                     order.push_back(elem.toInt());
                 }
             }
+            if (lineNo == 2) {
+                topologyType = elements[0];
+            }
             lineNo++;
         }
 
         if (shape.size() != order.size()) qWarning() << "shape and order size is not same";
     }
 
-    adjMat->resetAdjMat(shape, order);
+    adjMat->resetAdjMat(shape, order, topologyType);
 
     QVector<int> shapeAfterAggregation = shape;
     QVector<int> orderWithoutAggregatedDims = order;
@@ -599,7 +606,7 @@ void MainWindow::setupAdjMatrix(QString analysisDirPath)
         orderAfterAggregation.push_back(rank);
     }
 
-    aggregatedAdjMat->resetAdjMat(shapeAfterAggregation, orderAfterAggregation);
+    aggregatedAdjMat->resetAdjMat(shapeAfterAggregation, orderAfterAggregation, topologyType);
 }
 
 void MainWindow::setupGraphView()

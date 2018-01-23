@@ -8,7 +8,7 @@ QT       += core gui opengl concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = traceViz
+TARGET = visuco
 TEMPLATE = app
 
 

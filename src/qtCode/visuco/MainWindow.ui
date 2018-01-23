@@ -519,9 +519,6 @@ View</string>
               <property name="bottomMargin">
                <number>0</number>
               </property>
-              <item>
-               <widget class="GraphView3D" name="graphView3D"/>
-              </item>
              </layout>
             </widget>
            </widget>
@@ -1231,11 +1228,6 @@ Route View</string>
    <class>MatrixView</class>
    <extends>QOpenGLWidget</extends>
    <header>MatrixView.h</header>
-  </customwidget>
-  <customwidget>
-   <class>GraphView3D</class>
-   <extends>QOpenGLWidget</extends>
-   <header>GraphView3D.h</header>
   </customwidget>
   <customwidget>
    <class>GraphView</class>

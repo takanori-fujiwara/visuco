@@ -2,8 +2,16 @@
 
 AdjMatrix::AdjMatrix(QVector<int> shape, QVector<int> order)
 {
-    topologyMode = "5dtorus"; // 5dtorus or theta
+    topologyMode = "theta"; // 5dtorus or theta
 
+    setUnitAdjMatrices(topologyMode);
+    genAdjMat(shape, order);
+    this->shape = shape;
+    this->order = order;
+}
+
+void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
+{
     if (topologyMode == "5dtorus") {
         unitAdjMat_2
                 << QVector<int>{0, 1}
@@ -100,16 +108,15 @@ AdjMatrix::AdjMatrix(QVector<int> shape, QVector<int> order)
                 << QVector<int>{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
                 << QVector<int>{1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 0};
     }
-    genAdjMat(shape, order);
-    this->shape = shape;
-    this->order = order;
 }
 
-void AdjMatrix::resetAdjMat(QVector<int> shape, QVector<int> order)
+void AdjMatrix::resetAdjMat(QVector<int> shape, QVector<int> order, QString topologyMode)
 {
+    setUnitAdjMatrices(topologyMode);
     genAdjMat(shape, order);
     this->shape = shape;
     this->order = order;
+    this->topologyMode = topologyMode;
 }
 
 QVector< QVector <int> > AdjMatrix::genIdentityMat(int n)

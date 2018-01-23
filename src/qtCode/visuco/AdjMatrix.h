@@ -33,7 +33,7 @@ public:
     QVector< QVector <int> > getUnitAdjMat_16();
 
     QVector< QVector <int> > genIdentityMat(int n);
-    void resetAdjMat(QVector<int> shape, QVector<int> order);
+    void resetAdjMat(QVector<int> shape, QVector<int> order, QString topologyMode);
     void printAdjMat();
     int coordToColNum(QVector<int> coord);
     QVector<int> colNumToCoord(int colNum);
@@ -52,6 +52,7 @@ private:
     QVector< QVector <int> > unitAdjMat_6; // for theta
     QVector< QVector <int> > unitAdjMat_12; // for theta
 
+    void setUnitAdjMatrices(QString topologyMode);
     void genAdjMat(QVector<int> shape, QVector<int> order);
     void genAdjMat(QList< QVector< QVector <int> > > unitAdjMatrices);
 };

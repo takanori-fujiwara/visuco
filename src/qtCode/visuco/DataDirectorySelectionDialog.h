@@ -11,6 +11,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QComboBox>
 #include <QSpacerItem>
 #include <QIntValidator>
 #include <QDebug>
@@ -36,6 +37,7 @@ private:
     QLineEdit *routeFileLineEdit;
     QLineEdit *matrixMappingFileLineEdit;
     QLineEdit *hopByteFileLineEdit;
+    QComboBox *topologyTypeComboBox;
     QLineEdit *numNodesLineEdit;
     QLineEdit *numCoresLineEdit;
     QLineEdit *thresForGraphPartitionLineEdit;

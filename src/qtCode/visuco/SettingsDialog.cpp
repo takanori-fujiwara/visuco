@@ -2,7 +2,7 @@
 
 SettingsDialog::SettingsDialog(QWidget *parent)
 {
-    pythonPath = "/usr/local/bin/python";
+    pythonPath = "/usr/local/bin/python2";
     rscriptPath = "/usr/local/bin/RScript";
     isOk = false;
 

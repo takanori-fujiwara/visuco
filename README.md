@@ -66,7 +66,7 @@ Installation
 
     `R` (run R in terminal)
 
-    `>>> install.packages(c("sna", "qap", "argparse"))`
+    `>>> install.packages(c("sna", "argparse"))`
 
 * If you have not installed python, install python
 
@@ -95,7 +95,7 @@ Installation
 
 * Build the software with the procedures below.
 
-	- Launch "./src/qtCode/traceViz/traceViz.pro" with QtCreator.
+	- Launch "./src/qtCode/visuco/visuco.pro" with QtCreator.
 
 	- If QtCreator says no kits, select "options" link.
 
@@ -104,12 +104,12 @@ Installation
 
 		- After finishing above setting, select "Desktop" as a Kit.
 
-	- Built with QtCreator.
+	- Built with QtCreator. "Release" mode is recommended for better performance.
 
 Usage
 -----
 ##### Initial Settings
-* Run from QtCreator or launch "traceViz.app" in build directory.
+* Run from QtCreator or launch "visuco.app" in build directory.
 * Select "Preferences" in the menu bar and set paths for python and RScript commands.
 
 ******
@@ -124,20 +124,21 @@ Usage
     	Hop 2: [6-12] 4 (0 0 1 0 0 0) -> 12 (0 1 1 0 0 0)
     	...
 
-* Select a matrix mapping file (CSV). This is used for mapping the coordinates of ranks to the coordinates in the matrix view.
+* Select a matrix mapping file (TXT file with space separation). This is used for mapping the coordinates of ranks to the coordinates in the matrix view.
 
 	The format must be
-    first line: sizes of dimensions.
 
     	1st line: size of each dimensions
     	2nd line: Permutation order in the matrix view as you want to use.
+        3rd line: Network topology type. Currently, we support only "5dtorus" and "theta". Select one of them.
 
     For example, if you use 5D torus with 4x2x4x8x2 sizes (each number is cooresponding to A,B,C,D,E dimension) and EDCBA order
 
-    	4,2,4,8,2
-    	4,3,2,1,0
+    	4 2 4 8 2
+    	4 3 2 1 0
+        5dtorus
 
-* (Optional) Select a hop-byte file (CSV). This is used when the system suggests alternative routes or mapping.
+* (Optional) Select a hop-byte file (TXT file with space separation). This is used when the system suggests alternative routes or mapping.
 
 	The format must be
 
@@ -145,16 +146,13 @@ Usage
 
 	For example,
 
-    	4,10,342321,3
+    	4 10 342321 3
 
-* Set number of nodes, cores according to your environment that used for obtaining the route file.
+* Set number of cores according to your environment that used for obtaining the route file.
 
 * Set a threshold for the number of nodes, which is used for graph partitioning and aggregating the node.
 
-
-	This is still under developing. Just use the same value with the number of nodes now.
-
-* Finally, set an output directory as you want and push "OK".
+* Finally, set an output directory as you want and push "OK". Then, wait for a while until finishing running all scripts. (We have a plan for implementing notification of finishing running.)
 
 ******
 

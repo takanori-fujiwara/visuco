@@ -19,7 +19,7 @@ class Graph
 public:
     Graph(QVector<Vertex> vertices = QVector<Vertex>(), QVector<Edge> edges = QVector<Edge>(), QVector<Route> routes = QVector<Route>());
 
-    bool loadFromRoutesFile(const QString &rtFilePath, const QString &hopbyteFilePath, int numOfCores, QVector<int> shape, QVector<int> order, QString outputDir, QVector<int> aggregatingDims = QVector<int>());
+    bool loadFromRoutesFile(const QString &rtFilePath, const QString &hopbyteFilePath, int numOfCores, QVector<int> shape, QVector<int> order, QString outputDir, QString topologyType, QVector<int> aggregatingDims = QVector<int>());
     bool loadFromGraphFiles(const QString &vertexFilePath, const QString &edgeFilePath, const QString &routeFilePath, const QString &summaryFilePath);
     bool loadFromPosFile(const QString &filePath);
     QStringList parseRouteLine(QString line);

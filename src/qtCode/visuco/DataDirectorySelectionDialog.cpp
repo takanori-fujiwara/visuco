@@ -14,6 +14,8 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     routeFileLineEdit = new QLineEdit;
     matrixMappingFileLineEdit = new QLineEdit;
     hopByteFileLineEdit = new QLineEdit;
+    topologyTypeComboBox = new QComboBox;
+    topologyTypeComboBox->addItems({"theta", "5dtorus (currently, not supported.)"});
     numNodesLineEdit = new QLineEdit;
     numNodesLineEdit->setValidator(new QIntValidator(1, 999999, this));
     numNodesLineEdit->setText("1");
@@ -33,6 +35,7 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     QHBoxLayout *hopByteFileHBoxLayout = new QHBoxLayout;
     QGroupBox *selectParametersGroupBox = new QGroupBox;
     QVBoxLayout *selectParametersVBoxLayout = new QVBoxLayout;
+    QHBoxLayout *topologyTypeHBoxLayout = new QHBoxLayout;
     QHBoxLayout *numNodesHBoxLayout = new QHBoxLayout;
     QHBoxLayout *numCoresHBoxLayout = new QHBoxLayout;
     QHBoxLayout *thresForGraphPartitionHBoxLayout = new QHBoxLayout;
@@ -45,6 +48,7 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     QLabel *matrixMappingFileLabel = new QLabel;
     QLabel *hopByteFileLabel = new QLabel;
     QLabel *parameterSelectionExplanationLabel = new QLabel;
+    QLabel *topologyTypeLabel = new QLabel;
     QLabel *numNodesLabel = new QLabel;
     QLabel *numCoresLabel = new QLabel;
     QLabel *thresForGraphPartitionLabel = new QLabel;
@@ -68,6 +72,7 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     matrixMappingFileLabel->setText("Matrix mapping file");
     hopByteFileLabel->setText("Hop-byte file (optional)");
     parameterSelectionExplanationLabel->setText("Set numbers");
+    topologyTypeLabel->setText("Topology type");
     numNodesLabel->setText("Number of nodes");
     numCoresLabel->setText("Number of cores");
     thresForGraphPartitionLabel->setText("Thres # of nodes to start aggregation");
@@ -88,6 +93,10 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     matrixMappingFileLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     hopByteFileLabel->setMinimumWidth(200);
     hopByteFileLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+    topologyTypeComboBox->setMinimumWidth(100);
+    topologyTypeComboBox->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
+    topologyTypeLabel->setMinimumWidth(200);
+    topologyTypeLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     numNodesLabel->setMinimumWidth(200);
     numNodesLabel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::MinimumExpanding);
     numCoresLabel->setMinimumWidth(200);
@@ -128,6 +137,7 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     vBoxLayout->addWidget(selectParametersGroupBox);
     selectParametersGroupBox->setLayout(selectParametersVBoxLayout);
     selectParametersVBoxLayout->addWidget(parameterSelectionExplanationLabel);
+    selectParametersVBoxLayout->addLayout(topologyTypeHBoxLayout);
     selectParametersVBoxLayout->addLayout(numNodesHBoxLayout);
     selectParametersVBoxLayout->addLayout(numCoresHBoxLayout);
     selectParametersVBoxLayout->addLayout(thresForGraphPartitionHBoxLayout);
@@ -146,8 +156,11 @@ DataDirectorySelectionDialog::DataDirectorySelectionDialog(QWidget *parent)
     hopByteFileHBoxLayout->addWidget(hopByteFileLineEdit);
     hopByteFileHBoxLayout->addWidget(hopByteFilePushBtn);
 
-    numNodesHBoxLayout->addWidget(numNodesLabel);
-    numNodesHBoxLayout->addWidget(numNodesLineEdit);
+    //topologyTypeHBoxLayout->addWidget(topologyTypeLabel);
+    //topologyTypeHBoxLayout->addWidget(topologyTypeComboBox);
+
+    //numNodesHBoxLayout->addWidget(numNodesLabel);
+    //numNodesHBoxLayout->addWidget(numNodesLineEdit);
 
     numCoresHBoxLayout->addWidget(numCoresLabel);
     numCoresHBoxLayout->addWidget(numCoresLineEdit);
@@ -193,13 +206,13 @@ void DataDirectorySelectionDialog::setRouteFile()
 
 void DataDirectorySelectionDialog::setMatrixMappingFile()
 {
-    matrixMappingFile = QFileDialog::getOpenFileName(this, tr("Open File"), matrixMappingFile, tr("CSV Files (*.csv)"));
+    matrixMappingFile = QFileDialog::getOpenFileName(this, tr("Open File"), matrixMappingFile, tr("TXT Files (*.txt)"));
     matrixMappingFileLineEdit->setText(matrixMappingFile);
 }
 
 void DataDirectorySelectionDialog::setHopByteFile()
 {
-    hopByteFile = QFileDialog::getOpenFileName(this, tr("Open File"), hopByteFile, tr("CSV Files (*.csv)"));
+    hopByteFile = QFileDialog::getOpenFileName(this, tr("Open File"), hopByteFile, tr("TXT Files (*.txt)"));
     hopByteFileLineEdit->setText(hopByteFile);
 }
 
