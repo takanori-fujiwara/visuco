@@ -81,7 +81,12 @@ Installation
 
 * Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/).
 
-    -   Note: current graph-tool version cannot been installed via homebrew since homebrew/science was deprecated. Try a different way.
+    -   Note (Jan-23, 2018): current graph-tool version cannot been installed via homebrew/science since homebrew/science was deprecated. Try below commands instead of the commands mentioned in the instruction above.
+
+      `brew tap brewsci/science`
+      `brew install --build-from-source graph-tool`
+
+    If you see "The brew link step did not complete successfully", follow instructions in the terminal. You might need to change the permission to the directory (e.g., `sudo chown -R` \`whoami\``:admin /usr/local/share` then `brew link --overwrite graph-tool`)
 
     <!-- -   Note: current graph-tool version in homebrew does not work with the latest "boost". Try to use the command below.
 
