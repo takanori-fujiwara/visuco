@@ -45,6 +45,28 @@ MatrixView::MatrixView(QWidget *parent)
 
     routeWidth = 3.0;
     edgeWidth = 4.0;
+
+    setCurrentSettings();
+}
+
+void MatrixView::updateVisualEncodingParams(float edgeWidth, float routeWidth)
+{
+    this->edgeWidth = edgeWidth;
+    this->routeWidth = routeWidth;
+    updateAllDrawingInfo();
+    update();
+}
+
+void MatrixView::setCurrentSettings()
+{
+    QSettings settings("ANL_VIDI", "Visuco");
+
+    if (settings.value("dataDirectorySelectionDialog/edgeWidthMatrixView").isValid()) {
+        edgeWidth = settings.value("dataDirectorySelectionDialog/edgeWidthMatrixView").toFloat();
+    }
+    if (settings.value("dataDirectorySelectionDialog/routeWidthMatrixView").isValid()) {
+        routeWidth = settings.value("dataDirectorySelectionDialog/routeWidthMatrixView").toFloat();
+    }
 }
 
 void MatrixView::initializeGL()

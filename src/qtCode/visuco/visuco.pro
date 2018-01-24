@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     input.cpp \
     memetic.cpp \
     localSearch.cpp \
-    MappingGuideSa.cpp
+    MappingGuideSa.cpp \
+    VisualEncodingDialog.cpp
 
 HEADERS  += MainWindow.h \
     Vertex.h \
@@ -53,7 +54,8 @@ HEADERS  += MainWindow.h \
     memetic.h \
     common.h \
     localSearch.h \
-    MappingGuideSa.h
+    MappingGuideSa.h \
+    VisualEncodingDialog.h
 
 FORMS    += MainWindow.ui
 

@@ -207,6 +207,24 @@ void MainWindow::on_actionShow_Stat_View_triggered()
     setupStatView();
 }
 
+void MainWindow::on_actionChange_Visual_Encoding_Settings_triggered()
+{
+    visualEncodingDialog = new VisualEncodingDialog;
+    visualEncodingDialog->exec();
+
+    if (visualEncodingDialog->isOk) {
+        float nodeSizeWeight = visualEncodingDialog->nodeSizeWeight;
+        float nodeSizeMin = visualEncodingDialog->nodeSizeMin;
+        float edgeWidthWeight = visualEncodingDialog->edgeWidthWeight;
+        float routeWidthWeight = visualEncodingDialog->routeWidthWeight;
+        float selfLoopRouteRatio = visualEncodingDialog->selfLoopRouteRatio;
+        float edgeWidthMatrixView = visualEncodingDialog->edgeWidthMatrixView;
+        float routeWidthMatrixView = visualEncodingDialog->routeWidthMatrixView;
+        ui->graphView->updateVisualEncodingParams(nodeSizeWeight, nodeSizeMin, edgeWidthWeight, routeWidthWeight, selfLoopRouteRatio);
+        ui->matrixView->updateVisualEncodingParams(edgeWidthMatrixView, routeWidthMatrixView);
+    }
+}
+
 void MainWindow::on_actionGenerate_Analysis_Data_triggered()
 {
     dirSelectionDialog = new DataDirectorySelectionDialog;

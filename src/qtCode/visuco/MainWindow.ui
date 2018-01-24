@@ -980,6 +980,7 @@ Route View</string>
      <string>Setting</string>
     </property>
     <addaction name="actionPreferences"/>
+    <addaction name="actionChange_Visual_Encoding_Settings"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -1008,6 +1009,11 @@ Route View</string>
   <action name="actionOutput_Current_Displayed_Analysis_Data">
    <property name="text">
     <string>Output Current Displayed Analysis Data</string>
+   </property>
+  </action>
+  <action name="actionChange_Visual_Encoding_Settings">
+   <property name="text">
+    <string>Change Visual Encoding Settings</string>
    </property>
   </action>
  </widget>

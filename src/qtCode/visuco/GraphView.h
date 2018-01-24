@@ -14,6 +14,7 @@
 #include <QLabel>
 #include <QComboBox>
 #include <QPushButton>
+#include <QSettings>
 
 #include <cmath>
 
@@ -67,6 +68,7 @@ public:
     void updateSelectedRouteWidths();
     void updateSelectedElementDrawingInfo();
     void updateRoutePositionsMap(QString metric);
+    void updateVisualEncodingParams(float nodeSizeWeight, float nodeSizeMin, float edgeWidthWeight, float routeWidthWeight, float selfLoopRouteRatio);
 
 public slots:
     void setMouseMode(QString mouseMode);
@@ -205,6 +207,7 @@ private:
     int getRouteIndexIntersectedWithPolygon(QVector<int>& targetRouteIndices, vector<GLfloat> selectionAreaGlBuffer, QString selectTargetType = "displayed");
 
     void selectElement(vector<GLfloat> selectionAreaGlBuffer, QString selectTargetType = "displayed");
+    void setCurrentSettings();
 
 private slots:
     void switchEdgeDrawingMode();

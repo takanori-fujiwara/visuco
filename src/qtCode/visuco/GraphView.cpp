@@ -101,6 +101,7 @@
 //    edgeWidthWeight = 5.0;
 //    routeWidthWeight = 0.01;//0.04
 //    selfLoopRouteRatio = 0.4;// 0.4
+    setCurrentSettings();
 }
 
 void GraphView::updateBasicVisualEncodingParams(QString appName)
@@ -179,6 +180,40 @@ void GraphView::updateBasicVisualEncodingParams(QString appName)
         routeWidthWeight = 0.01;//0.04
         selfLoopRouteRatio = 0.4;// 0.4
         showOnlySelectedElems = false;
+    }
+
+    setCurrentSettings();
+}
+
+void GraphView::updateVisualEncodingParams(float nodeSizeWeight, float nodeSizeMin, float edgeWidthWeight, float routeWidthWeight, float selfLoopRouteRatio)
+{
+    this->nodeSizeWeight = nodeSizeWeight;
+    this->nodeSizeMin = nodeSizeMin;
+    this->edgeWidthWeight = edgeWidthWeight;
+    this->routeWidthWeight = routeWidthWeight;
+    this->selfLoopRouteRatio = selfLoopRouteRatio;
+    updateAllDrawingInfo(false);
+    update();
+}
+
+void GraphView::setCurrentSettings()
+{
+    QSettings settings("ANL_VIDI", "Visuco");
+
+    if (settings.value("dataDirectorySelectionDialog/nodeSizeWeight").isValid()) {
+        nodeSizeWeight = settings.value("dataDirectorySelectionDialog/nodeSizeWeight").toFloat();
+    }
+    if (settings.value("dataDirectorySelectionDialog/nodeSizeMin").isValid()) {
+        nodeSizeMin = settings.value("dataDirectorySelectionDialog/nodeSizeMin").toFloat();
+    }
+    if (settings.value("dataDirectorySelectionDialog/edgeWidthWeight").isValid()) {
+        edgeWidthWeight = settings.value("dataDirectorySelectionDialog/edgeWidthWeight").toFloat();
+    }
+    if (settings.value("dataDirectorySelectionDialog/routeWidthWeight").isValid()) {
+        routeWidthWeight = settings.value("dataDirectorySelectionDialog/routeWidthWeight").toFloat();
+    }
+    if (settings.value("dataDirectorySelectionDialog/selfLoopRouteRatio").isValid()) {
+        selfLoopRouteRatio = settings.value("dataDirectorySelectionDialog/selfLoopRouteRatio").toFloat();
     }
 }
 

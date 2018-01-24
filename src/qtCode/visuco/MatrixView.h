@@ -7,6 +7,7 @@
 #include <QWheelEvent>
 #include <QDebug>
 #include <QMenu>
+#include <QSettings>
 
 #include <QtGlobal>
 #include <QTime>
@@ -66,6 +67,8 @@ public:
     void updateEdgesCbo(vector<GLfloat> &edgesCbo, QString edgesVboType = "displayed"); // edgesVboType: displayed, suggested
     void updateAllDrawingInfo();  
     void updateAllDrawingInfoForLens();
+
+    void updateVisualEncodingParams(float edgeWidth, float routeWidth);
 
 public slots:
     void setMouseMode(QString mouseMode);
@@ -210,6 +213,7 @@ private:
     int getDisplayedColSize();
     int getAdjustedBlockSize();
     int getAdjustedBlockSizeForLens();
+    void setCurrentSettings();
 
 private slots:
     void switchEdgeDrawingMode();

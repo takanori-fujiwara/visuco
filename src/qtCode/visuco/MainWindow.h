@@ -13,7 +13,9 @@
 #include "FormatConverter.h"
 #include "MappingGuide.h"
 #include "DataDirectorySelectionDialog.h"
+#include "VisualEncodingDialog.h"
 #include "SettingsDialog.h"
+#include "VisualEncodingDialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -37,6 +39,7 @@ private:
     AdjMatrix* aggregatedAdjMat;
     DataDirectorySelectionDialog* dirSelectionDialog;
     SettingsDialog* settingsDialog;
+    VisualEncodingDialog* visualEncodingDialog;
 
     int thresAggregation;
     QVector<int> aggregatingDims;
@@ -84,6 +87,7 @@ private slots:
     void on_actionGenerate_Analysis_Data_triggered();
     void on_actionLoad_Analysis_Data_triggered();
     void on_actionShow_Stat_View_triggered();
+    void on_actionChange_Visual_Encoding_Settings_triggered();
     void on_actionPreferences_triggered();
 
 signals:
