@@ -13,16 +13,17 @@ AdjMatrix::AdjMatrix(QVector<int> shape, QVector<int> order)
 void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
 {
     if (topologyMode == "5dtorus") {
+        unitAdjMat_2.clear();
         unitAdjMat_2
                 << QVector<int>{0, 1}
                 << QVector<int>{1, 0};
-
+        unitAdjMat_4.clear();
         unitAdjMat_4
                 << QVector<int>{0, 1, 0, 1}
                 << QVector<int>{1, 0, 1, 0}
                 << QVector<int>{0, 1, 0, 1}
                 << QVector<int>{1, 0, 1, 0};
-
+        unitAdjMat_8.clear();
         unitAdjMat_8
                 << QVector<int>{0, 1, 0, 0, 0, 0, 0, 1}
                 << QVector<int>{1, 0, 1, 0, 0, 0, 0, 0}
@@ -32,7 +33,7 @@ void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
                 << QVector<int>{0, 0, 0, 0, 1, 0, 1, 0}
                 << QVector<int>{0, 0, 0, 0, 0, 1, 0, 1}
                 << QVector<int>{1, 0, 0, 0, 0, 0, 1, 0};
-
+        unitAdjMat_16.clear();
         unitAdjMat_16
                 << QVector<int>{0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1}
                 << QVector<int>{1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
@@ -52,12 +53,22 @@ void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
                 << QVector<int>{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0};
     } else if (topologyMode == "theta") {
     // For Theta
+        unitAdjMat_2.clear();
+        unitAdjMat_2
+                << QVector<int>{0, 1}
+                << QVector<int>{1, 0};
+        unitAdjMat_3.clear();
+        unitAdjMat_3
+                << QVector<int>{0, 1, 1}
+                << QVector<int>{1, 0, 1}
+                << QVector<int>{1, 1, 0};
+        unitAdjMat_4.clear();
         unitAdjMat_4
                 << QVector<int>{0, 1, 1, 1}
                 << QVector<int>{1, 0, 1, 1}
                 << QVector<int>{1, 1, 0, 1}
                 << QVector<int>{1, 1, 1, 0};
-
+        unitAdjMat_16.clear();
         unitAdjMat_16
                 << QVector<int>{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
                 << QVector<int>{1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
@@ -75,7 +86,7 @@ void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
                 << QVector<int>{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1}
                 << QVector<int>{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1}
                 << QVector<int>{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0};
-
+        unitAdjMat_6.clear();
         unitAdjMat_6
                 << QVector<int>{0, 1, 1, 1, 1, 1}
                 << QVector<int>{1, 0, 1, 1, 1, 1}
@@ -83,7 +94,7 @@ void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
                 << QVector<int>{1, 1, 1, 0, 1, 1}
                 << QVector<int>{1, 1, 1, 1, 0, 1}
                 << QVector<int>{1, 1, 1, 1, 1, 0};
-
+        unitAdjMat_8.clear();
         unitAdjMat_8
                 << QVector<int>{0, 1, 1, 1, 1, 1, 1, 1}
                 << QVector<int>{1, 0, 1, 1, 1, 1, 1, 1}
@@ -93,7 +104,7 @@ void AdjMatrix::setUnitAdjMatrices(QString topologyMode)
                 << QVector<int>{1, 1, 1, 1, 1, 0, 1, 1}
                 << QVector<int>{1, 1, 1, 1, 1, 1, 0, 1}
                 << QVector<int>{1, 1, 1, 1, 1, 1, 1, 0};
-
+        unitAdjMat_12.clear();
         unitAdjMat_12
                 << QVector<int>{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
                 << QVector<int>{1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
@@ -145,6 +156,9 @@ void AdjMatrix::genAdjMat(QVector<int> shape, QVector<int> order)
         switch (dimensions.at(i)) {
         case 2:
             unitAdjMatrices.push_back(unitAdjMat_2);
+            break;
+        case 3:
+            unitAdjMatrices.push_back(unitAdjMat_3);
             break;
         case 4:
             unitAdjMatrices.push_back(unitAdjMat_4);
@@ -293,6 +307,7 @@ void AdjMatrix::outputAdjMatInCsv(QString csvFilePath)
 void AdjMatrix::setShape(QVector<int> shape) { this->shape = shape; }
 void AdjMatrix::setOrder(QVector<int> order) { this->order = order; }
 void AdjMatrix::setUnitAdjMat_2(QVector< QVector <int> > unitAdjMat_2) { this->unitAdjMat_2 = unitAdjMat_2; }
+void AdjMatrix::setUnitAdjMat_3(QVector< QVector <int> > unitAdjMat_3) { this->unitAdjMat_3 = unitAdjMat_3; }
 void AdjMatrix::setUnitAdjMat_4(QVector< QVector <int> > unitAdjMat_4) { this->unitAdjMat_4 = unitAdjMat_4; }
 void AdjMatrix::setUnitAdjMat_6(QVector< QVector <int> > unitAdjMat_6) { this->unitAdjMat_6 = unitAdjMat_6; }
 void AdjMatrix::setUnitAdjMat_8(QVector< QVector <int> > unitAdjMat_8) { this->unitAdjMat_8 = unitAdjMat_8; }
@@ -305,6 +320,7 @@ QVector<int> AdjMatrix::getOrder() { return order; }
 int AdjMatrix::getColSize() { return adjMat.size(); }
 int AdjMatrix::getValueAt(int row, int col) { return adjMat.at(row).at(col); }
 QVector< QVector <int> > AdjMatrix::getUnitAdjMat_2() { return unitAdjMat_2; }
+QVector< QVector <int> > AdjMatrix::getUnitAdjMat_3() { return unitAdjMat_3; }
 QVector< QVector <int> > AdjMatrix::getUnitAdjMat_4() { return unitAdjMat_4; }
 QVector< QVector <int> > AdjMatrix::getUnitAdjMat_6() { return unitAdjMat_6; }
 QVector< QVector <int> > AdjMatrix::getUnitAdjMat_8() { return unitAdjMat_8; }

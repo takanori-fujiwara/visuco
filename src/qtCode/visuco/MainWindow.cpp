@@ -623,7 +623,6 @@ void MainWindow::setupAdjMatrix(QString analysisDirPath)
         int rank = sortedOrderWithoutAggregatedDims.indexOf(o);
         orderAfterAggregation.push_back(rank);
     }
-
     aggregatedAdjMat->resetAdjMat(shapeAfterAggregation, orderAfterAggregation, topologyType);
 }
 

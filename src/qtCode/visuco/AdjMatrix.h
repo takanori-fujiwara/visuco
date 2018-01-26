@@ -15,6 +15,7 @@ public:
     void setShape(QVector<int> shape);
     void setOrder(QVector<int> order);
     void setUnitAdjMat_2(QVector< QVector <int> > unitAdjMat_2);
+    void setUnitAdjMat_3(QVector< QVector <int> > unitAdjMat_3);
     void setUnitAdjMat_4(QVector< QVector <int> > unitAdjMat_4);
     void setUnitAdjMat_6(QVector< QVector <int> > unitAdjMat_6);
     void setUnitAdjMat_8(QVector< QVector <int> > unitAdjMat_8);
@@ -26,6 +27,7 @@ public:
     int getColSize();
     int getValueAt(int row, int col);
     QVector< QVector <int> > getUnitAdjMat_2();
+    QVector< QVector <int> > getUnitAdjMat_3();
     QVector< QVector <int> > getUnitAdjMat_4();
     QVector< QVector <int> > getUnitAdjMat_6();
     QVector< QVector <int> > getUnitAdjMat_8();
@@ -46,6 +48,7 @@ private:
     QVector<int> shape;
     QVector<int> order;
     QVector< QVector <int> > unitAdjMat_2;
+    QVector< QVector <int> > unitAdjMat_3;
     QVector< QVector <int> > unitAdjMat_4;
     QVector< QVector <int> > unitAdjMat_8;
     QVector< QVector <int> > unitAdjMat_16;
