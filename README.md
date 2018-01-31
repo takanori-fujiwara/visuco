@@ -33,6 +33,12 @@ Installation
 #### Mac OS
 * Install latest XCode from Mac App store
 * After finishing installation of XCode, __launch XCode at once to verify XCode__.
+* Install xcode-select with a command below.
+
+    `xcode-select --install`
+
+    After this command, follow the instruction from XCode.
+
 * Install Qt. If you use home brew(http://brew.sh) use the commands below
 
     `brew update`
