@@ -72,7 +72,7 @@ Installation
 
     `R` (run R in terminal)
 
-    `>>> install.packages(c("sna", "argparse"))`
+    `>>> install.packages(c("sna", "argparse", "qap"))`
 
 * If you have not installed python, install python
 
