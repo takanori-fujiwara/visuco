@@ -61,5 +61,5 @@ FORMS    += MainWindow.ui
 
 CONFIG += c++11
 #INCLUDEPATH += /usr/local/include/viennacl/
-INCLUDEPATH += /usr/local/include/eigen3/
+#INCLUDEPATH += /usr/local/include/eigen3/
 QMAKE_CXXFLAGS_RELEASE += -O3 # to optimize the compiled result

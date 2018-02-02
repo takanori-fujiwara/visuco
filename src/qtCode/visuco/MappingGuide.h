@@ -11,7 +11,7 @@
 #include <QTime>
 
 #include <algorithm>
-#include <Eigen/Core>
+#include "Eigen/Core"
 
 #include "combination.h"
 #include "Graph.h"
