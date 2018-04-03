@@ -19,8 +19,8 @@ In Proceedings of IEEE Symposium on Visual Analytics Science and Technology (VAS
 
 Requirements
 -----
-* Note: Tested on Mac OS X (El Capitan, Sierra, and High Sierra).
-* XCode (latest)
+* Note: Tested on Mac OS X (El Capitan, Sierra, and High Sierra) and Ubuntu 16.04 LTS.
+* XCode (latest) for Mac OS X. build-essential (latest) for Ubuntu.
 * Qt5 (latest)
 * QtCreator (latest)
 * (Follows are required if you want to generate new graph data.)
@@ -117,7 +117,60 @@ Installation
 
 	- Built with QtCreator. "Release" mode is recommended for better performance.
 
-Usage
+#### Ubuntu
+* Install g++.
+
+    `sudo apt-get update`
+
+    `sudo apt-get install build-essential`
+
+* Install Qt (https://wiki.qt.io/Install_Qt_5_on_Ubuntu).
+
+    `wget http://download.qt.io/official_releases/qt/5.10/5.10.1/qt-opensource-linux-x64-5.10.1.run`
+
+    `chmod +x qt-opensource-linux-x64-5.10.1.run`
+
+    `./qt-opensource-linux-x64-5.10.1.run`
+
+    Note: In the "Select Components", don't forget check Qt 5.10.1.
+
+* Install fonts and OpenGL.
+
+    `sudo apt-get install libfontconfig1`
+
+    `sudo apt-get install mesa-common-dev`
+
+    `sudo apt-get install libglu1-mesa-dev -y`
+
+* Install QtCreator.
+
+    `sudo apt-get install qtcreator`
+
+##### Follows are in case you want to generate new graph data
+* Install R and R packages.
+
+    `sudo apt-get install r-base`
+
+* If you have not installed python, install python
+
+    `sudo apt-get install python2.7 python-pip`
+
+* Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/).
+
+* Build the software with the procedures below.
+
+	- Launch "./src/qtCode/visuco/visuco.pro" with QtCreator.
+
+	- If QtCreator says no kits, select "options" link.
+
+		- Configure Kits for Build. go to "preference -> Qt Versions" and then add the path to qmake (the direrctory you set during the installation of Qt5) if there is no qt version.
+		- Then, go to "Kits->Desktop" and select added latest qt version in "Qt version", select GCC(x86 64bit) in "Compiler".
+
+		- After finishing above setting, select "Desktop" as a Kit.
+
+	- Built with QtCreator. "Release" mode is recommended for better performance.
+      If QtCreator asks to set the executable file, select "visuco" from the build directory.
+
 -----
 ##### Initial Settings
 * Run from QtCreator or launch "visuco.app" in build directory.
