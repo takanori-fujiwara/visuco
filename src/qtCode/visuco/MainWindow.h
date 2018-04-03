@@ -46,6 +46,7 @@ private:
 
     int statViewCurrentComboIndex;
 
+    QString baseDir;
     QString pythonPath;
     QString rscriptPath;
 

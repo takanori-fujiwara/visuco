@@ -17,37 +17,18 @@ MainWindow::MainWindow(QWidget *parent) :
 //    aggregatingDims = {3}; // For Theta (previous one)
     qSort(aggregatingDims.begin(), aggregatingDims.end(), qGreater<int>());
 
-    pythonPath = "/usr/local/bin/python2";
-    rscriptPath = "/usr/local/bin/Rscript";
+    #ifdef __APPLE__ || __MACH__ // Mac
+        pythonPath = "/usr/local/bin/python2";
+        rscriptPath = "/usr/local/bin/Rscript";
+        baseDir = qApp->applicationDirPath() + "/../../../../../../src/";
+    #elif __linux__ // Linux
+        pythonPath = "/usr/bin/python2";
+        rscriptPath = "/usr/bin/Rscript";
+        baseDir = qApp->applicationDirPath() + "/../../../../../../";
+        baseDir = qApp->applicationDirPath() + "/../../../src/";
+    #endif
+
     loadCurrentSettings();
-
-    // This can be used for generating analysis data automatically
-    if (false) {
-        QStringList apps = {"miniAMR"};
-        QStringList nodes = {"64"};
-        QStringList cores = {"1"};
-        QStringList options = {"_s2"};
-        int thresForGraphPartition = 256;
-        foreach(QString a, apps) {
-            foreach(QString n, nodes) {
-                foreach(QString c, cores) {
-                    foreach(QString o, options) {
-                        QString name_full = a + "_n" + n + "_c" + c  + o;
-                        QString name_short = a + "_n" + n;
-                        QString dataDir = qApp->applicationDirPath() + "/../../../../../../data/";
-                        QString analysisDirPath = dataDir + "graph/" + name_full + "/";
-                        QString routeFilePath =  dataDir + "route/" + name_full + "_routes.txt";
-                        //QString routeFilePath =  dataDir + "route/old_ver2/" + name + "_routes.txt";
-                        QString mappingFilePath =  dataDir + "mapping/" + name_short + "_mapping.csv";
-                        QString hopByteFilePath = dataDir + "hopbyte/" + name_full + "_hopbytes.txt";//"";
-                        int numCores = c.toInt();
-                        loadNewData(analysisDirPath, routeFilePath, mappingFilePath, hopByteFilePath, numCores, thresForGraphPartition);
-                    }
-                }
-            }
-        }
-    }
-
     setupComboBox();
     color = new Color;
     graph = new Graph;
@@ -88,82 +69,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->graphView, SIGNAL(routeColorSettingsChanged(QString,float,float)),
             ui->matrixView, SLOT(changeRouteColorMapSettings(QString,float,float)));
     connect(ui->graphView, SIGNAL(switchGraphCalled()), ui->matrixView, SLOT(switchGraphAndAdjMat()));
-
-    // This can be used for generating qap result automatically
-//    QStringList apps = {"miniAMR"};
-//    QStringList nodes = {"2048"};
-//    QStringList cores = {"2"};
-//    QStringList options = {"_s2"};
-//    foreach(QString a, apps) {
-//        foreach(QString n, nodes) {
-//            foreach(QString c, cores) {
-//                foreach(QString o, options) {
-//                    QString name = a + "_n" + n + "_c" + c  + o;
-//                    QString dataDir = qApp->applicationDirPath() + "/../../../../../../data/";
-//                    QString analysisDirPath = dataDir + "graph/" + name + "/";
-//                    resetupAll(analysisDirPath);
-//                    ui->matrixView->setGraphDir(analysisDirPath);
-//                    ui->matrixView->suggestAltMapping();
-//                    //mappingGuide.suggestMapping(QVector<int>({}), "all-ma", analysisDirPath + "route_weight_mat.csv", analysisDirPath + "dist_mat.csv",  analysisDirPath + "qap_intermed/", analysisDirPath + "qapresult.txt");
-//                    outputMappingFileFromQapResult(analysisDirPath + "qapresult.txt", "/Users/fujiwara/Desktop/mapping/mapping_n" + n + "_c" + c + o + ".txt");
-//                }
-//            }
-//        }
-//    }
-
-    ///
-    /// This can be used for generating qap result automatically and output
-    ///
-    if (false) {
-        QString type = "all-ma-gp"; // "all-ma", "all-ma-gp", "selected-optimal", "selected-randomized"
-        QString perfOutput = qApp->applicationDirPath() + "/../../../../../../data/perfResults/" + type + "_ours.csv";
-        QStringList apps = {"miniMD"};
-        QStringList nodes = {"512","1024","2048"};
-        QStringList cores = {"1","4","16"};
-        QStringList options = {"_w"};
-        int repeat = 1;
-        QVector<QVector<int> > replacedTargetVertices = {{0},{0,1},{0,1,2},{0,1,2,3},{0,1,2,3,4},{0,1,2,3,4,5}};//,{0,1,2,3,4,5,6},{0,1,2,3,4,5,6,7}};
-        foreach(QString a, apps) {
-            foreach(QString n, nodes) {
-                foreach(QString c, cores) {
-                    foreach(QString o, options) {
-                        QString name = a + "_n" + n + "_c" + c  + o;
-                        QString dataDir = qApp->applicationDirPath() + "/../../../../../../data/";
-                        QString analysisDirPath = dataDir + "graph/" + name + "/";
-                        resetupAll(analysisDirPath);
-                        ui->matrixView->setGraphDir(analysisDirPath);
-                        if (type == "all-ma") {
-                            for (int i = 0 ; i < repeat; ++i) {
-                                ui->matrixView->setMappingGuideType(type);
-                                ui->matrixView->suggestAltMapping(perfOutput, false);
-                            }
-                        } else if (type == "all-ma-gp") {
-                            for (int i = 0 ; i < repeat; ++i) {
-                                ui->matrixView->setMappingGuideType("all-ma");
-                                ui->matrixView->suggestAltMapping(perfOutput, true);
-                            }
-                        } else if (type == "selected-optimal") {
-                            ui->matrixView->setMappingGuideType(type);
-                            foreach(QVector<int> vertices, replacedTargetVertices) {
-                                for (int i = 0 ; i < repeat; ++i) {
-                                    ui->matrixView->setDisplayedVertexIndices(vertices);
-                                    ui->matrixView->suggestAltMapping(perfOutput, false);
-                                }
-                            }
-                        } else if (type == "selected-randomized") {
-                            ui->matrixView->setMappingGuideType(type);
-                            foreach(QVector<int> vertices, replacedTargetVertices) {
-                                for (int i = 0 ; i < repeat; ++i) {
-                                    ui->matrixView->setDisplayedVertexIndices(vertices);
-                                    ui->matrixView->suggestAltMapping(perfOutput, false);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 }
 
 MainWindow::~MainWindow()
@@ -360,7 +265,7 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
     QString aEdgeFile = analysisDirPath + "aggregated_edges.csv";
     QString aVertexFile = analysisDirPath + "aggregated_vertices.csv";
 
-    scriptFile = qApp->applicationDirPath() + "/../../../../../../src/python/visualization/draw_graph_with_aggregation.py";
+    scriptFile = baseDir + "python/visualization/draw_graph_with_aggregation.py";
 
     if (numOfVertices < thresAggregation) {
         command = pythonPath + " " + scriptFile + " -ef " + edgeFile + " -vf " + vertexFile +
@@ -380,7 +285,7 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
     tmpAdjMat->outputAdjMatInCsv(analysisDirPath + "adj_mat.csv");
     delete tmpAdjMat;
 
-    scriptFile = qApp->applicationDirPath() + "/../../../../../../src/r/matrixProcessing/adjMatToDistMat.R";
+    scriptFile = baseDir + "r/matrixProcessing/adjMatToDistMat.R";
     command = rscriptPath + " " + scriptFile + " " + analysisDirPath + "adj_mat.csv";
 
     if (QProcess::execute(command) < 0) {
@@ -405,18 +310,18 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
         /// We partition distance graph based on its base adjacency matrix
         ///
         if (!graphPartitionByAdj) {
-            command = qApp->applicationDirPath() + "/../../../../../../src/metis-5.1.0/build/Darwin-x86_64/programs/gpmetis" + " " + analysisDirPath + "dist.graph" + " " + QString::number(numOfSubGraphs);
+            command = baseDir + "metis-5.1.0/build/Darwin-x86_64/programs/gpmetis" + " " + analysisDirPath + "dist.graph" + " " + QString::number(numOfSubGraphs);
             if (QProcess::execute(command) < 0) {
                 qCritical() << "Cannot start METIS program";
             }
         } else {
-            command = qApp->applicationDirPath() + "/../../../../../../src/metis-5.1.0/build/Darwin-x86_64/programs/gpmetis" + " " + analysisDirPath + "adj.graph" + " " + QString::number(numOfSubGraphs);
+            command = baseDir + "metis-5.1.0/build/Darwin-x86_64/programs/gpmetis" + " " + analysisDirPath + "adj.graph" + " " + QString::number(numOfSubGraphs);
             if (QProcess::execute(command) < 0) {
                 qCritical() << "Cannot start METIS program";
             }
         }
 
-        command = qApp->applicationDirPath() + "/../../../../../../src/metis-5.1.0/build/Darwin-x86_64/programs/gpmetis" + " " + analysisDirPath + "route_weight.graph" + " " + QString::number(numOfSubGraphs);// + " -objtype vol";// -tpwgts " + analysisDirPath + "twgts.txt";
+        command = baseDir + "metis-5.1.0/build/Darwin-x86_64/programs/gpmetis" + " " + analysisDirPath + "route_weight.graph" + " " + QString::number(numOfSubGraphs);// + " -objtype vol";// -tpwgts " + analysisDirPath + "twgts.txt";
         if (QProcess::execute(command) < 0) {
             qCritical() << "Cannot start METIS program";
         }
@@ -444,7 +349,7 @@ void MainWindow::loadNewData(QString analysisDirPath, QString routesFilePath, QS
     graph->outputRouteListWithTCoordFromRoutesFile(routesFilePath, analysisDirPath + "route_list.csv", numCores, shape);
 
     // load hist
-    scriptFile = qApp->applicationDirPath() + "/../../../../../../src/r/stat/outoutHist.R";
+    scriptFile = baseDir + "r/stat/outoutHist.R";
     command = "/usr/local/bin/Rscript " + scriptFile + " -ef " + analysisDirPath + "edges.csv" + " -n 100";
 
     if (QProcess::execute(command) < 0) {
@@ -660,7 +565,7 @@ void MainWindow::setupMatrixView()
     ui->matrixView->setColor(color);
     ui->matrixView->setUnitFoldingSize(1);
     ui->matrixView->setRscriptPath(rscriptPath);
-    ui->matrixView->setSaQapPath(qApp->applicationDirPath() + "/../../../../../../src/r/qap/saQap.R");
+    ui->matrixView->setSaQapPath(baseDir + "r/qap/saQap.R");
     ui->matrixView->resetSettings();
 }
 
