@@ -24,7 +24,6 @@ MainWindow::MainWindow(QWidget *parent) :
     #elif __linux__ // Linux
         pythonPath = "/usr/bin/python2";
         rscriptPath = "/usr/bin/Rscript";
-        baseDir = qApp->applicationDirPath() + "/../../../../../../";
         baseDir = qApp->applicationDirPath() + "/../../../src/";
     #endif
 
