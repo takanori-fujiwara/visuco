@@ -178,6 +178,17 @@ Installation
 
 ******
 
+##### Getting Started
+* Select "Generate Analysis Data" from "File" menu.
+* Set each setting and press "OK".
+    - From "sample_data" directory, select "IMB-MPI1_n32_c1_routes.txt" as a route file, "IMB-MPI1_n32_mapping.txt" as a mapping file, and "IMB-MPI1_n32_c1_hopbytes" as a hopbyte file.
+    - Set "1" as a number of cores, "256" as thres # of nodes to start aggregation.
+    - Select an output directory where you want.
+* Select "Load Analysis Data" from "File" menu.
+* Select the directory you generated in the "Generate new analysis data" step.
+
+* After the steps above, you can see the visualized result in each view.
+
 ##### Generate new analysis data including graph information from route files and mappind data
 * Select "Generate Analysis Data" from "File" menu.
 * Select a route file (TXT) that you want to analyze. A route file must be the same format with an output file from bgqroute (https://github.com/pmalakar/bgqroute).
@@ -224,6 +235,9 @@ Installation
 * Select "Load Analysis Data" from "File" menu.
 * Select the directory you generated in the "Generate new analysis data" step.
 ******
+
+##### Interactions
+* (Work in progress)
 
 ## How to Cite
 Please, cite:
