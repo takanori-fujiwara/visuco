@@ -20,19 +20,49 @@ import color
 
 ## Parse Command Line Args
 ap = argparse.ArgumentParser()
-ap.add_argument('-ef', '--edgeFile', help='csv edge file', type=open, required=True)
+ap.add_argument('-ef',
+                '--edgeFile',
+                help='csv edge file',
+                type=open,
+                required=True)
 ap.add_argument('-vf', '--vertexFile', help='csv vertex file', type=open)
-ap.add_argument('-cf', '--childVertexIndicesFile', help='csv child vertex indices  file', type=open)
+ap.add_argument('-cf',
+                '--childVertexIndicesFile',
+                help='csv child vertex indices  file',
+                type=open)
 ap.add_argument('-o', '--out', help='output file dir', default='')
-ap.add_argument('-so', '--statOut', help='output statistical plot data or not', type=str, choices=['true', 'false'], default='false')
+ap.add_argument('-so',
+                '--statOut',
+                help='output statistical plot data or not',
+                type=str,
+                choices=['true', 'false'],
+                default='false')
 ap.add_argument('-fm', '--format', help='output image format', default='png')
-ap.add_argument('-gt', '--graphType', help='graph type', type=str, choices=['directed', 'undirected'], default='undirected')
-ap.add_argument('-l', '--layout', help='graph layout', type=str, choices=['sfdp', 'sfdpw', 'fr', 'frw', 'arf', 'arfw', 'radial_tree', 'random', 'none'], default='sfdpw')
-ap.add_argument('-i', '--interact', help='graph interaction', type=str, choices=['true', 'false'], default='true')
+ap.add_argument('-gt',
+                '--graphType',
+                help='graph type',
+                type=str,
+                choices=['directed', 'undirected'],
+                default='undirected')
+ap.add_argument('-l',
+                '--layout',
+                help='graph layout',
+                type=str,
+                choices=[
+                    'sfdp', 'sfdpw', 'fr', 'frw', 'arf', 'arfw', 'radial_tree',
+                    'random', 'none'
+                ],
+                default='sfdpw')
+ap.add_argument('-i',
+                '--interact',
+                help='graph interaction',
+                type=str,
+                choices=['true', 'false'],
+                default='true')
 args = ap.parse_args()
 
 ## Set Graph Data
-if(args.graphType == 'undirected'):
+if (args.graphType == 'undirected'):
     g = gt.Graph(directed=False)
 else:
     g = gt.Graph(directed=True)
@@ -50,7 +80,7 @@ g.edge_properties['color'] = g.new_edge_property('vector<float>')
 if (args.vertexFile):
     for line in args.vertexFile:
         v = g.add_vertex()
-    print 'finished loading vertices'
+    print('finished loading vertices')
 
 # load childs
 childrens = []
@@ -79,14 +109,14 @@ for line in args.edgeFile:
     #    e_color[e] = color.ratioToHeatMapColor(float(items[2]) / 20.0);
 
     # here also calculate total penwidth for vertex size
-    v = g.vertex(source) # target vertex
+    v = g.vertex(source)  # target vertex
     v_size[v] += weight
 
 # if undirected, remove duplicated edges
 if (g.is_directed() == False):
     gt.remove_parallel_edges(g)
 
-print 'finished loading edges'
+print('finished loading edges')
 
 ## Basic Stats
 # number of vertices and edges
@@ -108,19 +138,19 @@ if (g.is_directed() == True):
     histDegOut = gt.vertex_hist(g, 'out')
 
 # print basic stats
-print ''
-print '# Graph Information'
-print 'number of vertices: ' + str(numVertices)
-print 'number of edges: ' + str(numEdges)
+print('')
+print('# Graph Information')
+print('number of vertices: ' + str(numVertices))
+print('number of edges: ' + str(numEdges))
 
 if (g.is_directed() == True):
-    print 'in-degree(ave, std): ' + str(aveDegIn)
-    print 'out-degree(ave std): ' + str(aveDegOut)
+    print('in-degree(ave, std): ' + str(aveDegIn))
+    print('out-degree(ave std): ' + str(aveDegOut))
 else:
-    print 'degree(ave, std): ' + str(aveDegTotal)
+    print('degree(ave, std): ' + str(aveDegTotal))
 
-print 'pseudo diameter: ' + str(graphDiameter)
-print ''
+print('pseudo diameter: ' + str(graphDiameter))
+print('')
 
 if (args.statOut == 'true'):
     # plot degree distribution
@@ -129,7 +159,7 @@ if (args.statOut == 'true'):
         pl.plot(histDegIn[1][:-1], histDegIn[0] / numVertices, 'o')
         pl.plot(histDegOut[1][:-1], histDegOut[0] / numVertices, 'o')
         pl.legend(('in', 'out'), numpoints=1)
-    else :
+    else:
         pl.plot(histDegTotal[1][:-1], histDegTotal[0] / numVertices, 'o')
 
     pl.gca().set_yscale('log')
@@ -160,7 +190,8 @@ elif (args.layout == 'sfdpw'):
 elif (args.layout == 'fr'):
     pos = gt.fruchterman_reingold_layout(g)
 elif (args.layout == 'frw'):
-    pos = gt.fruchterman_reingold_layout(g, weight=g.edge_properties['penwidth'])
+    pos = gt.fruchterman_reingold_layout(g,
+                                         weight=g.edge_properties['penwidth'])
 elif (args.layout == 'arf'):
     # The arf layout algorithm is numerically unstable
     # It sometime causes an error.
@@ -177,9 +208,9 @@ elif (args.layout == 'random'):
     pos = gt.random_layout(g)
 
 # get max and min for normalization
-minXPos =  10000000.0
+minXPos = 10000000.0
 maxXPos = -10000000.0
-minYPos =  10000000.0
+minYPos = 10000000.0
 maxYPos = -10000000.0
 for v in g.vertices():
     minXPos = min(minXPos, pos[v][0])
@@ -191,13 +222,13 @@ for v in g.vertices():
 rangeX = maxXPos - minXPos
 rangeY = maxYPos - minYPos
 if (rangeX > rangeY):
-    nXMin = -1.0 # normalized min
-    nXMax =  1.0 # normalized max
+    nXMin = -1.0  # normalized min
+    nXMax = 1.0  # normalized max
     nYMin = nXMin * rangeY / rangeX
     nYMax = nXMax * rangeY / rangeX
 else:
     nYMin = -1.0
-    nYMax =  1.0
+    nYMax = 1.0
     nXMin = nYMin * rangeX / rangeY
     nXMax = nYMax * rangeX / rangeY
 
@@ -205,8 +236,10 @@ f = open(args.out + 'positions_' + args.layout + '.csv', "w")
 posX = []
 posY = []
 for v in g.vertices():
-    x = ( pos[v][0] * nXMin - pos[v][0] * nXMax + minXPos * nXMax - maxXPos * nXMin ) / (maxXPos - minXPos)
-    y = ( pos[v][1] * nYMin - pos[v][1] * nYMax + minYPos * nYMax - maxYPos * nYMin ) / (maxYPos - minYPos)
+    x = (pos[v][0] * nXMin - pos[v][0] * nXMax + minXPos * nXMax -
+         maxXPos * nXMin) / (maxXPos - minXPos)
+    y = (pos[v][1] * nYMin - pos[v][1] * nYMax + minYPos * nYMax -
+         maxYPos * nYMin) / (maxYPos - minYPos)
     posX.append(x)
     posY.append(y)
     f.write(str(x) + ',' + str(y) + '\n')
@@ -231,25 +264,26 @@ f.close()
 #     f2.write(str(x) + ',' + str(y) + '\n')
 # f2.close()
 
-
-if(args.layout != 'none'):
+if (args.layout != 'none'):
     #for v in g.vertices():
-        #if (g.vertex_properties['size'][g.vertex(v)] < aveDegTotal[0] * 1.5):
-        #    g.vertex_properties['label'][g.vertex(v)] = ''
-        #else:
-        #    g.vertex_properties['label'][g.vertex(v)] = g.vertex_index[v]
+    #if (g.vertex_properties['size'][g.vertex(v)] < aveDegTotal[0] * 1.5):
+    #    g.vertex_properties['label'][g.vertex(v)] = ''
+    #else:
+    #    g.vertex_properties['label'][g.vertex(v)] = g.vertex_index[v]
     for v in g.vertices():
-        g.vertex_properties['font_size'][g.vertex(v)] = g.vertex_properties['size'][g.vertex(v)];
+        g.vertex_properties['font_size'][g.vertex(
+            v)] = g.vertex_properties['size'][g.vertex(v)]
         #g.vertex_properties['font_size'][g.vertex(v)] = 3.0 * math.sqrt(g.vertex_properties['size'][g.vertex(v)])
 
-    if(args.interact == 'true'):
+    if (args.interact == 'true'):
         graph_output = None
     else:
         graph_output = args.out + 'graph_' + args.layout + '.' + args.format
 
-    gt.graph_draw(g,
+    gt.graph_draw(
+        g,
         pos=pos,
-        vertex_fill_color=[44/255.0, 127/255.0, 184/255.0, 0.8],
+        vertex_fill_color=[44 / 255.0, 127 / 255.0, 184 / 255.0, 0.8],
         #vertex_size=g.vertex_properties['size'],
         #vertex_text=g.vertex_index,
         #vertex_text_position=0,

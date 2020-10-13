@@ -24,7 +24,7 @@ Requirements
 * Qt5 (latest)
 * QtCreator (latest)
 * (Follows are required if you want to generate new graph data.)
- * Python 2.7 or higher
+ * Python 3
  * graph-tool (latest)
  * R (latest)
 
@@ -76,13 +76,13 @@ Installation
 
 * If you have not installed python, install python
 
-    `brew install python`
+    `brew install python3`
 
-  Check `python2` runs the same version installed above.
+  Check `python3` runs the same version installed above.
 
-    `which python2`
+    `which python3`
 
-  If this does not return `/usr/local/bin/python2`, add `export PATH=/usr/local/bin:$PATH` in .bash_profile. Also, try to `brew unlink python && brew link python`.  
+  If this does not return `/usr/local/bin/python3`, add `export PATH=/usr/local/bin:$PATH` in .bash_profile. Also, try to `brew unlink python3 && brew link python3`.  
 
 
 * Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/).
@@ -100,7 +100,7 @@ Installation
 
     -   After installing graph-tool, check whether it works or not.
 
-    	`python2` (run python2 in terminal)
+    	`python3` (run python3 in terminal)
 
    		`>>> from graph_tool.all import *`
 
@@ -151,9 +151,10 @@ Installation
 
     `sudo apt-get install r-base`
 
-* If you have not installed python, install python
+* If you have not installed python3, install python3 and python3-pip
 
-    `sudo apt-get install python2.7 python-pip`
+    `sudo apt-get install python3.xxx` (xxx: python version you want to install)
+    `sudo apt-get install python3-pip`
 
 * Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/).
 

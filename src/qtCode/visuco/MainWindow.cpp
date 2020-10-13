@@ -18,11 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
     qSort(aggregatingDims.begin(), aggregatingDims.end(), qGreater<int>());
 
     #ifdef __APPLE__ || __MACH__ // Mac
-        pythonPath = "/usr/local/bin/python2";
+        pythonPath = "/usr/local/bin/python3";
         rscriptPath = "/usr/local/bin/Rscript";
         baseDir = qApp->applicationDirPath() + "/../../../../../../src/";
     #elif __linux__ // Linux
-        pythonPath = "/usr/bin/python2";
+        pythonPath = "/usr/bin/python3";
         rscriptPath = "/usr/bin/Rscript";
         baseDir = qApp->applicationDirPath() + "/../../../src/";
     #endif

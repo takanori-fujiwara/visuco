@@ -3,6 +3,7 @@
 
 #include <QOpenGLWidget>
 #include <QPainter>
+#include <QPainterPath>
 #include <QMouseEvent>
 #include <QWheelEvent>
 #include <QMenu>
