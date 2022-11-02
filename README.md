@@ -55,9 +55,9 @@ Installation
 
 * Download and Install QtCreator.
 
-    `brew tap caskroom/cask`
+    `brew tap homebrew/cask`
 
-    `brew cask install qt-creator`
+    `brew install --cask qt-creator`
 
 ##### Follows are in case you want to generate new graph data
 * Install R and R packages.
@@ -86,17 +86,6 @@ Installation
 
 
 * Install graph-tool. See this requirements and installation. [instruction](https://graph-tool.skewed.de/).
-
-    -   Note (Jan-23, 2018): current graph-tool version cannot been installed via homebrew/science since homebrew/science was deprecated. Try below commands instead of the commands mentioned in the instruction above.
-
-      `brew tap brewsci/science`
-      `brew install --build-from-source graph-tool`
-
-    If you see "The brew link step did not complete successfully", follow instructions in the terminal. You might need to change the permission to the directory (e.g., `sudo chown -R` \`whoami\``:admin /usr/local/share` then `brew link --overwrite graph-tool`)
-
-    <!-- -   Note: current graph-tool version in homebrew does not work with the latest "boost". Try to use the command below.
-
-    	`brew install graph-tool --build-from-source` -->
 
     -   After installing graph-tool, check whether it works or not.
 
