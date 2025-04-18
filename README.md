@@ -19,7 +19,7 @@ In Proceedings of IEEE Symposium on Visual Analytics Science and Technology (VAS
 
 Requirements
 -----
-* Note: Tested on macOS Ventura and Ubuntu 22.0.4 LTS.
+* Note: Tested on macOS Sequoia and Ubuntu 22.0.4 LTS.
 * XCode (latest) for macOS. build-essential (latest) for Ubuntu.
 * Qt5 (latest)
 * (Follows are required if you want to generate new graph data.)
